@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "DEBUG=myapp.* nodemon server.js",
+    "test": "MONGODB_URI=mongodb://localhost/beer-test mocha",
+    "test:watch": "MONGODB_URI=mongodb://localhost/beer-test nodemon --exec mocha"
+  },
+  "author": "@nthugon",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.0",
+    "body-parser": "^1.16.0",
+    "cors": "^2.8.1",
+    "debug": "^2.6.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^7.2.1",
+    "mongoose": "^4.7.8",
+    "morgan": "^1.7.0"
+  }
+}
