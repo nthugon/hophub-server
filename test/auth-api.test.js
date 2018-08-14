@@ -9,7 +9,7 @@ const connection = require('../lib/setup-mongoose');
 const app = require('../lib/app');
 
 
-describe('Authorization:', () => {
+describe('Authorization API:', () => {
   
     const request = chai.request(app);
     let firstToken = '';
