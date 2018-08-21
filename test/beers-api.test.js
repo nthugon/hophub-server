@@ -25,9 +25,7 @@ describe('Beers API:', () => {
         brewery: 'some other brewery',
         enteredBy: 'some other user',
         name: 'other beer name',
-        style: 'other beer style',
-        userId: '246',
-        _id: '456'
+        style: 'other beer style'
     };
 
     function getUserFromToken(token) {
@@ -69,6 +67,8 @@ describe('Beers API:', () => {
             user = getUserFromToken(token);
             beer.enteredBy = user.username;
             beer.userId = user._id;
+            beer2.enteredBy = user.username;
+            beer2.userId = user._id;
             done(); 
         })
         .catch(done);
@@ -86,12 +86,39 @@ describe('Beers API:', () => {
         .catch(done);
     });
 
+    it('POSTs a new beer', done => {
+        request
+            .post('/api/beers')
+            .set('authorization', token)
+            .send(beer2)
+            .then(res => {
+                assert.isOk(res.body._id);
+                beer2.__v = 0;
+                beer2._id = res.body._id;
+                assert.deepEqual(res.body, beer2);
+                done();
+            })
+            .catch(done);
+    });
+
     it('GETs all', done => {
         request
         .get('/api/beers')
         .set('authorization', token)
         .then(res => {
-            assert.deepEqual(res.body, [beer]);
+            assert.deepEqual(res.body, [beer, beer2]);
+            done();
+        })
+        .catch(done);
+    });
+
+    it('GETs by userid', done => {
+        request
+        .get(`/api/beers/user/${user._id}`)
+        .set('authorization', token)
+        .then(res => {
+            let usersBeers = res.body;
+            assert.deepEqual(usersBeers[0], beer);
             done();
         })
         .catch(done);
@@ -102,12 +129,14 @@ describe('Beers API:', () => {
         .get(`/api/beers/${beer._id}`)
         .set('authorization', token)
         .then(res => {
-            const returnedBeer = res.body;
+            let returnedBeer = res.body;
             beer.reviews = [];
             assert.deepEqual(returnedBeer, beer);
             done();
         })
         .catch(done);
     });
+
+
 
 });
